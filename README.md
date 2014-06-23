@@ -26,45 +26,42 @@ Two additional files included were:
 - activity_labels.txt - Links the activity class labels with their activity name
 
 These 8 files were downloaded to the working directory and, from there, read into R using read.table:
-subject_test <- read.table("subject_test.txt", quote = "\"")
-X_test <- read.table("X_test.txt", quote = "\"")
-y_test <- read.table("y_test.txt", quote = "\"")
-subject_train <- read.table("subject_train.txt", quote = "\"")
-X_train <- read.table("X_train.txt", quote = "\"")
-y_train <- read.table("y_train.txt", quote = "\"")
-features <- read.table("features.txt", quote = "\"", colClasses = "character")
-activity_labels <- read.table("activity_labels.txt", quote = "\"", colClasses = "character")
-dim(activity_labels)
-# [1] 6 2
-str(activity_labels)
-activity_labels
+
+subject_test <- read.table("subject_test.txt", quote = "\"")  
+X_test <- read.table("X_test.txt", quote = "\"")  
+y_test <- read.table("y_test.txt", quote = "\"")  
+subject_train <- read.table("subject_train.txt", quote = "\"")  
+X_train <- read.table("X_train.txt", quote = "\"")  
+y_train <- read.table("y_train.txt", quote = "\"")  
+features <- read.table("features.txt", quote = "\"", colClasses = "character")  
+activity_labels <- read.table("activity_labels.txt", quote = "\"", colClasses = "character")  
 
 ####### 
 
-# PROJECT PART 1: Merge the training and the test sets to create one data set.
+### PROJECT PART 1: Merge the training and the test sets to create one data set.
 
-# Concatenate the 3 test files together using cbind:
-test1 <- cbind(subject_test, y_test)
-test2 <- cbind(test1, X_test)
+Concatenate the 3 test files together using cbind:  
+test1 <- cbind(subject_test, y_test)  
+test2 <- cbind(test1, X_test)  
 
-# Concatenate the 3 train files together using cbind:
-train1 <- cbind(subject_train, y_train)
-train2 <- cbind(train1, X_train)
+Concatenate the 3 train files together using cbind:  
+train1 <- cbind(subject_train, y_train)   
+train2 <- cbind(train1, X_train)   
 
-# Concatenate the test and train files together using rbind:
-complete <- rbind(test2, train2)
+Concatenate the test and train files together using rbind:  
+complete <- rbind(test2, train2)  
 
 This resulted in a complete dataset containing 10299 observations and 563 variables.
 
 #######
 
-## PROJECT PART 2: Extract only the measurements on the mean and standard deviation for each measurement. 
+### PROJECT PART 2: Extract only the measurements on the mean and standard deviation for each measurement. 
 
 In preparation for further processing and subsetting of the complete dataset,
 the appropriate activity and column names were added to the dataset.
 
-Apply column names
-(1) Columns 1 and 2 named "subject" and "activity", respectively
+Apply column names   
+(1) Columns 1 and 2 named "subject" and "activity", respectively  
 (2) Columns 3:563 (the remainder of the columns, 561 columns) named using the values in the second column of the "features" dataframe:
 
 colnames(complete)[1:2] <- c("subject", "activity")
@@ -80,23 +77,22 @@ This resulted in a dataframe containing 10299 observations and 68 variables.
 
 ######
 
-## PROJECT PART 3: Use descriptive activity names to name the activities in the data set 
+### PROJECT PART 3: Use descriptive activity names to name the activities in the data set 
 
 Using the "mapvalues" function from the plyr package, I renamed the "activity" numerical codes with names according to the activity_labels dataframe, substituting lower case for upper case.
 
 require(plyr)
 complete_sub$activity <- mapvalues(complete_sub$activity, c(1:6), c("walking", "walkingUpstairs", "walkingDownstairs", "sitting", "standing", "laying"), warn_missing = TRUE)
 
-#### Original incorrect code:
-complete$activity <- mapvalues(complete$activity, c(1:6), c("walking", "walkingUpstairs", "walkingDownstairs", "sitting", "standing", "laying"), warn_missing = TRUE)
-#### NOTE:  
+#### NOTE: Original incorrect code:  
+complete$activity <- mapvalues(complete$activity, c(1:6), c("walking", "walkingUpstairs", "walkingDownstairs", "sitting", "standing", "laying"), warn_missing = TRUE)    
 In the uploaded "tidy" data set, the activity names were inadvertantly mapped to the older "complete" dataset as above, and therefore were not correctly mapped to the "complete_sub" dataset which was further processed and uploaded. The corrected code, and the corrected "tidyDataSmart.txt" text file, is the version on GitHub.
 
 ######
 
-## PROJECT PART 4: Appropriately label the data set with descriptive variable names. 
+### PROJECT PART 4: Appropriately label the data set with descriptive variable names. 
 
-# In the first step of PROJECT PART 2, I applied column names for the 561 columns of feature data (columns 3:563) using the values in the second column of the features dataframe.  (Subsequently, only the columns containing "mean()" and "std()" in the column name were retained.)  These column, or variable, names are descriptive, however, they contain the characters "-" "(", and ")" (e.g. "tBodyAcc-mean()-X"), which can interfere with the interpretation of function calls in R. Therefore, the "-", "(", and ")" characters should be removed. Several additional "style" changes to the variable names were considered. According to Rasmus Baath in "The State of Naming Conventions in R" (http://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf), there are no official naming conventions for the R programming language.  Several  well known "R Style Guides" propose different naming conventions for variable names (e.g. "period.separated", "underscore_separated", "lowerCamelCase", "alllowercase").  However, the use of "lowerCamelCase" for variable names is common in the packages on Comprehensive R Archive Network (CRAN).  Therefore, variable names were be transformed as follows:
+In the first step of PROJECT PART 2, I applied column names for the 561 columns of feature data (columns 3:563) using the values in the second column of the features dataframe.  (Subsequently, only the columns containing "mean()" and "std()" in the column name were retained.)  These column, or variable, names are descriptive, however, they contain the characters "-" "(", and ")" (e.g. "tBodyAcc-mean()-X"), which can interfere with the interpretation of function calls in R. Therefore, the "-", "(", and ")" characters should be removed. Several additional "style" changes to the variable names were considered. According to Rasmus Baath in "The State of Naming Conventions in R" (http://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf), there are no official naming conventions for the R programming language.  Several  well known "R Style Guides" propose different naming conventions for variable names (e.g. "period.separated", "underscore_separated", "lowerCamelCase", "alllowercase").  However, the use of "lowerCamelCase" for variable names is common in the packages on Comprehensive R Archive Network (CRAN).  Therefore, variable names were be transformed as follows:
 "tBodyAcc-mean()-X"   -> "tBodyAccMeanX"
 "tGravityAcc-std()-Y" -> "tGravityAccStdY"
 "tBodyAccJerk-mean()-Z"   -> "tBodyAccJerkMeanZ"
@@ -111,7 +107,7 @@ names(complete_sub)[1] <- "subject"
 
 #####
 
-## PROJECT PART 5: Create a second, independent tidy data set with the average of each variable for each activity and each subject.
+### PROJECT PART 5: Create a second, independent tidy data set with the average of each variable for each activity and each subject.
 
 I used ddply from the plyr Package to split the mean and std subset dataframe
 observations by "activity" and by "subject", to apply the 'average' function to each of the feature columns and to return a dataframe including the subject, activity and each of the each of the averaged feature columns.
