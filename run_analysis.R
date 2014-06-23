@@ -25,7 +25,7 @@ colnames(complete)[3:563] <- features[[2]]
 complete_sub <- complete[, grepl("subject|activity|mean\\(\\)|std\\(\\)", names(complete))]
 
 require(plyr)
-complete$activity <- mapvalues(complete$activity, c(1:6), c("walking", "walkingUpstairs", "walkingDownstairs", "sitting", "standing", "laying"), warn_missing = TRUE)
+complete_sub$activity <- mapvalues(complete_sub$activity, c(1:6), c("walking", "walkingUpstairs", "walkingDownstairs", "sitting", "standing", "laying"), warn_missing = TRUE)
 
 names(complete_sub) <- chartr("mean\\(\\)", "Mean\\(\\)", names(complete_sub))
 names(complete_sub) <- chartr("std\\(\\)", "Std\\(\\)", names(complete_sub))

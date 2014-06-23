@@ -85,7 +85,12 @@ This resulted in a dataframe containing 10299 observations and 68 variables.
 Using the "mapvalues" function from the plyr package, I renamed the "activity" numerical codes with names according to the activity_labels dataframe, substituting lower case for upper case.
 
 require(plyr)
+complete_sub$activity <- mapvalues(complete_sub$activity, c(1:6), c("walking", "walkingUpstairs", "walkingDownstairs", "sitting", "standing", "laying"), warn_missing = TRUE)
+
+#### Original incorrect code:
 complete$activity <- mapvalues(complete$activity, c(1:6), c("walking", "walkingUpstairs", "walkingDownstairs", "sitting", "standing", "laying"), warn_missing = TRUE)
+#### NOTE:  
+In the uploaded "tidy" data set, the activity names were inadvertantly mapped to the older "complete" dataset as above, and therefore were not correctly mapped to the "complete_sub" dataset which was further processed and uploaded. The corrected code, and the corrected "tidyDataSmart.txt" text file, is the version on GitHub.
 
 ######
 
@@ -102,6 +107,7 @@ names(complete_sub) <- chartr("std\\(\\)", "Std\\(\\)", names(complete_sub))
 names(complete_sub) <- gsub("-", "", names(complete_sub))
 names(complete_sub) <- sub("\\(", "", names(complete_sub))
 names(complete_sub) <- sub("\\)", "", names(complete_sub))
+names(complete_sub)[1] <- "subject"
 
 #####
 
