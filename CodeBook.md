@@ -34,6 +34,19 @@ According to a paper (Anguita, D., et al. A Public Domain Dataset for Human Acti
 
 The variables in this dataset of the averages of the means and standard deviations for trials recording aspects of "Activities of Daily Living" captured by the smartphone's accelerometer and gyroscope. The Time Data was analyzed in this dataset.  The Time data was collected along 10 separate domains and were subsequently analyzed to produce a series of "features", many of which had separate values in three dimensions.  The mean value and standard deviation were calculated for each of these features. 
 
+From the original dataset README file (http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphone):
+
+"The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise 
+"filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. See 'features_info.txt' for more details. 
+
+For each record it is provided:
+
+- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration.
+- Triaxial Angular velocity from the gyroscope. 
+- A 561-feature vector with time . . . domain variables."
+
+The individual calculated means are:
+
 tBodyAccMeanXMean
 
 tBodyAccMeanYMean
