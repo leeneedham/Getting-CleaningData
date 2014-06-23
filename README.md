@@ -93,9 +93,9 @@ In the uploaded "tidy" data set, the activity names were inadvertantly mapped to
 ### PROJECT PART 4: Appropriately label the data set with descriptive variable names. 
 
 In the first step of PROJECT PART 2, I applied column names for the 561 columns of feature data (columns 3:563) using the values in the second column of the features dataframe.  (Subsequently, only the columns containing "mean()" and "std()" in the column name were retained.)  These column, or variable, names are descriptive, however, they contain the characters "-" "(", and ")" (e.g. "tBodyAcc-mean()-X"), which can interfere with the interpretation of function calls in R. Therefore, the "-", "(", and ")" characters should be removed. Several additional "style" changes to the variable names were considered. According to Rasmus Baath in "The State of Naming Conventions in R" (http://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf), there are no official naming conventions for the R programming language.  Several  well known "R Style Guides" propose different naming conventions for variable names (e.g. "period.separated", "underscore_separated", "lowerCamelCase", "alllowercase").  However, the use of "lowerCamelCase" for variable names is common in the packages on Comprehensive R Archive Network (CRAN).  Therefore, variable names were be transformed as follows:
-"tBodyAcc-mean()-X"   -> "tBodyAccMeanX"
-"tGravityAcc-std()-Y" -> "tGravityAccStdY"
-"tBodyAccJerk-mean()-Z"   -> "tBodyAccJerkMeanZ"
+- "tBodyAcc-mean()-X"   -> "tBodyAccMeanX"
+- "tGravityAcc-std()-Y" -> "tGravityAccStdY"
+- "tBodyAccJerk-mean()-Z"   -> "tBodyAccJerkMeanZ"
 In order to accomplish this, mean() and std() were identified in the current variable names and the first letter of the string was changed to a Capital case using the "chartr" function.  Then "-", "(" and ")" were removed using the "gsub" and "sub" functions. 
 
 names(complete_sub) <- chartr("mean\\(\\)", "Mean\\(\\)", names(complete_sub))  
@@ -110,7 +110,7 @@ names(complete_sub)[1] <- "subject"
 ### PROJECT PART 5: Create a second, independent tidy data set with the average of each variable for each activity and each subject.
 
 I used ddply from the plyr Package to split the mean and std subset dataframe
-observations by "activity" and by "subject", to apply the 'average' function to each of the feature columns and to return a dataframe including the subject, activity and each of the each of the averaged feature columns.
+observations by "activity" and by "subject", to apply the 'mean' function to each of the feature columns and to return a dataframe including the subject, activity and each of the each of the averaged feature columns.
 
 library(plyr)  
 tidy <- ddply(complete_sub, c("subject", "activity"), summarize,   
@@ -183,3 +183,4 @@ tidy <- ddply(complete_sub, c("subject", "activity"), summarize,
                   
 This resulted in a tidy dataset consisting of 180 observations and 68 variables.
 
+This dataset is "tidy" because each row consists of an independent observation  and each variable is in a column (Wickham, Hadley, "Tidy Data" Journal of Statistical Software. http://vita.had.co.nz/papers/tidy-data.pdf).  In this dataset, each row represents the mean of experimental data from a single participant performing a single class of activity - walking, walking upstairs, walking downstairs, sitting, standing, and  laying.  Each column, other than the "subject" and "activity" column, represents the average of various features of Time Data collected from smartphone accelerometers and gyrometers that are used to characterize the particular physical activity.  In addition, the dataset is a single type of observational unit - it is data derived from a single experiment.  
