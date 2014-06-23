@@ -98,12 +98,12 @@ In the first step of PROJECT PART 2, I applied column names for the 561 columns 
 "tBodyAccJerk-mean()-Z"   -> "tBodyAccJerkMeanZ"
 In order to accomplish this, mean() and std() were identified in the current variable names and the first letter of the string was changed to a Capital case using the "chartr" function.  Then "-", "(" and ")" were removed using the "gsub" and "sub" functions. 
 
-names(complete_sub) <- chartr("mean\\(\\)", "Mean\\(\\)", names(complete_sub))
-names(complete_sub) <- chartr("std\\(\\)", "Std\\(\\)", names(complete_sub))
-names(complete_sub) <- gsub("-", "", names(complete_sub))
-names(complete_sub) <- sub("\\(", "", names(complete_sub))
-names(complete_sub) <- sub("\\)", "", names(complete_sub))
-names(complete_sub)[1] <- "subject"
+names(complete_sub) <- chartr("mean\\(\\)", "Mean\\(\\)", names(complete_sub))  
+names(complete_sub) <- chartr("std\\(\\)", "Std\\(\\)", names(complete_sub))  
+names(complete_sub) <- gsub("-", "", names(complete_sub))  
+names(complete_sub) <- sub("\\(", "", names(complete_sub))  
+names(complete_sub) <- sub("\\)", "", names(complete_sub))  
+names(complete_sub)[1] <- "subject"  
 
 #####
 
@@ -112,75 +112,74 @@ names(complete_sub)[1] <- "subject"
 I used ddply from the plyr Package to split the mean and std subset dataframe
 observations by "activity" and by "subject", to apply the 'average' function to each of the feature columns and to return a dataframe including the subject, activity and each of the each of the averaged feature columns.
 
-library(plyr)
-tidy <- ddply(complete_sub, c("subject", "activity"), summarize, 
-              tBodyAccMeanXMean             = mean(tBodyAccMeanX),
-              tBodyAccMeanYMean             = mean(tBodyAccMeanY),
-              tBodyAccMeanZMean             = mean(tBodyAccMeanZ),
-              tBodyAccStdXMean              = mean(tBodyAccStdX),
-              tBodyAccStdYMean              = mean(tBodyAccStdY),
-              tBodyAccStdZMean              = mean(tBodyAccStdZ),
-              tGravityAccMeanXMean          = mean(tGravityAccMeanX),
-              tGravityAccMeanYMean          = mean(tGravityAccMeanY),
-              tGravityAccMeanZMean          = mean(tGravityAccMeanZ),
-              tGravityAccStdXMean           = mean(tGravityAccStdX),
-              tGravityAccStdYMean           = mean(tGravityAccStdY),
-              tGravityAccStdZMean           = mean(tGravityAccStdZ),
-              tBodyAccJerkMeanXMean         = mean(tBodyAccJerkMeanX),
-              tBodyAccJerkMeanYMean         = mean(tBodyAccJerkMeanY),
-              tBodyAccJerkMeanZMean         = mean(tBodyAccJerkMeanZ),
-              tBodyAccJerkStdXMean          = mean(tBodyAccJerkStdX),
-              tBodyAccJerkStdYMean          = mean(tBodyAccJerkStdY),
-              tBodyAccJerkStdZMean          = mean(tBodyAccJerkStdZ),
-              tBodyGyroMeanXMean            = mean(tBodyGyroMeanX),
-              tBodyGyroMeanYMean            = mean(tBodyGyroMeanY),
-              tBodyGyroMeanZMean            = mean(tBodyGyroMeanZ),
-              tBodyGyroStdXMean             = mean(tBodyGyroStdX),
-              tBodyGyroStdYMean             = mean(tBodyGyroStdY),
-              tBodyGyroStdZMean             = mean(tBodyGyroStdZ),
-              tBodyGyroJerkMeanXMean        = mean(tBodyGyroJerkMeanX),
-              tBodyGyroJerkMeanYMean        = mean(tBodyGyroJerkMeanY),
-              tBodyGyroJerkMeanZMean        = mean(tBodyGyroJerkMeanZ),
-              tBodyGyroJerkStdXMean         = mean(tBodyGyroJerkStdX),
-              tBodyGyroJerkStdYMean         = mean(tBodyGyroJerkStdY),
-              tBodyGyroJerkStdZMean         = mean(tBodyGyroJerkStdZ),
-              tBodyAccMagMeanMean           = mean(tBodyAccMagMean),
-              tBodyAccMagStdMean            = mean(tBodyAccMagStd),
-              tGravityAccMagMeanMean        = mean(tGravityAccMagMean),
-              tGravityAccMagStdMean         = mean(tGravityAccMagStd),
-              tBodyAccJerkMagMeanMean       = mean(tBodyAccJerkMagMean),
-              tBodyAccJerkMagStdMean        = mean(tBodyAccJerkMagStd),
-              tBodyGyroMagMeanMean          = mean(tBodyGyroMagMean),
-              tBodyGyroMagStdMean           = mean(tBodyGyroMagStd),
-              tBodyGyroJerkMagMeanMean      = mean(tBodyGyroJerkMagMean),
-              tBodyGyroJerkMagStdMean       = mean(tBodyGyroJerkMagStd),
-              fBodyAccMeanXMean             = mean(fBodyAccMeanX),
-              fBodyAccMeanYMean             = mean(fBodyAccMeanY),
-              fBodyAccMeanZMean             = mean(fBodyAccMeanZ),
-              fBodyAccStdXMean              = mean(fBodyAccStdX),
-              fBodyAccStdYMean              = mean(fBodyAccStdY),
-              fBodyAccStdZMean              = mean(fBodyAccStdZ),
-              fBodyAccJerkMeanXMean         = mean(fBodyAccJerkMeanX),
-              fBodyAccJerkMeanYMean         = mean(fBodyAccJerkMeanY),
-              fBodyAccJerkMeanZMean         = mean(fBodyAccJerkMeanZ),
-              fBodyAccJerkStdXMean          = mean(fBodyAccJerkStdX),
-              fBodyAccJerkStdYMean          = mean(fBodyAccJerkStdY),
-              fBodyAccJerkStdZMean          = mean(fBodyAccJerkStdZ),
-              fBodyGyroMeanXMean            = mean(fBodyGyroMeanX),
-              fBodyGyroMeanYMean            = mean(fBodyGyroMeanY),
-              fBodyGyroMeanZMean            = mean(fBodyGyroMeanZ),
-              fBodyGyroStdXMean             = mean(fBodyGyroStdX),
-              fBodyGyroStdYMean             = mean(fBodyGyroStdY),
-              fBodyGyroStdZMean             = mean(fBodyGyroStdZ),
-              fBodyAccMagMeanMean           = mean(fBodyAccMagMean),
-              fBodyAccMagStdMean            = mean(fBodyAccMagStd),
-              fBodyBodyAccJerkMagMeanMean   = mean(fBodyBodyAccJerkMagMean),
-              fBodyBodyAccJerkMagStdMean    = mean(fBodyBodyAccJerkMagStd),
-              fBodyBodyGyroMagMeanMean      = mean(fBodyBodyGyroMagMean),
-              fBodyBodyGyroMagStdMean       = mean(fBodyBodyGyroMagStd),
-              fBodyBodyGyroJerkMagMeanMean  = mean(fBodyBodyGyroJerkMagMean),
-              fBodyBodyGyroJerkMagStdMean   = mean(fBodyBodyGyroJerkMagStd))
+library(plyr)  
+tidy <- ddply(complete_sub, c("subject", "activity"), summarize,   
+              tBodyAccMeanXMean             = mean(tBodyAccMeanX),  
+              tBodyAccMeanYMean             = mean(tBodyAccMeanY),  
+              tBodyAccMeanZMean             = mean(tBodyAccMeanZ),  
+              tBodyAccStdXMean              = mean(tBodyAccStdX),  
+              tBodyAccStdYMean              = mean(tBodyAccStdY),  
+              tBodyAccStdZMean              = mean(tBodyAccStdZ),  
+              tGravityAccMeanXMean          = mean(tGravityAccMeanX),  
+              tGravityAccMeanYMean          = mean(tGravityAccMeanY),  
+              tGravityAccMeanZMean          = mean(tGravityAccMeanZ),  
+              tGravityAccStdXMean           = mean(tGravityAccStdX),  
+              tGravityAccStdYMean           = mean(tGravityAccStdY),  
+              tGravityAccStdZMean           = mean(tGravityAccStdZ),  
+              tBodyAccJerkMeanXMean         = mean(tBodyAccJerkMeanX),  
+              tBodyAccJerkMeanYMean         = mean(tBodyAccJerkMeanY),  
+              tBodyAccJerkMeanZMean         = mean(tBodyAccJerkMeanZ),  
+              tBodyAccJerkStdXMean          = mean(tBodyAccJerkStdX),  
+              tBodyAccJerkStdYMean          = mean(tBodyAccJerkStdY),  
+              tBodyAccJerkStdZMean          = mean(tBodyAccJerkStdZ),  
+              tBodyGyroMeanXMean            = mean(tBodyGyroMeanX),  
+              tBodyGyroMeanYMean            = mean(tBodyGyroMeanY),  
+              tBodyGyroMeanZMean            = mean(tBodyGyroMeanZ),  
+              tBodyGyroStdXMean             = mean(tBodyGyroStdX),  
+              tBodyGyroStdYMean             = mean(tBodyGyroStdY),  
+              tBodyGyroStdZMean             = mean(tBodyGyroStdZ),  
+              tBodyGyroJerkMeanXMean        = mean(tBodyGyroJerkMeanX),  
+              tBodyGyroJerkMeanYMean        = mean(tBodyGyroJerkMeanY),  
+              tBodyGyroJerkMeanZMean        = mean(tBodyGyroJerkMeanZ),  
+              tBodyGyroJerkStdXMean         = mean(tBodyGyroJerkStdX),  
+              tBodyGyroJerkStdYMean         = mean(tBodyGyroJerkStdY),  
+              tBodyGyroJerkStdZMean         = mean(tBodyGyroJerkStdZ),  
+              tBodyAccMagMeanMean           = mean(tBodyAccMagMean),  
+              tBodyAccMagStdMean            = mean(tBodyAccMagStd),  
+              tGravityAccMagMeanMean        = mean(tGravityAccMagMean),  
+              tGravityAccMagStdMean         = mean(tGravityAccMagStd),  
+              tBodyAccJerkMagMeanMean       = mean(tBodyAccJerkMagMean),  
+              tBodyAccJerkMagStdMean        = mean(tBodyAccJerkMagStd),  
+              tBodyGyroMagMeanMean          = mean(tBodyGyroMagMean),  
+              tBodyGyroMagStdMean           = mean(tBodyGyroMagStd),  
+              tBodyGyroJerkMagMeanMean      = mean(tBodyGyroJerkMagMean),  
+              tBodyGyroJerkMagStdMean       = mean(tBodyGyroJerkMagStd),  
+              fBodyAccMeanXMean             = mean(fBodyAccMeanX),  
+              fBodyAccMeanYMean             = mean(fBodyAccMeanY),  
+              fBodyAccMeanZMean             = mean(fBodyAccMeanZ),  
+              fBodyAccStdXMean              = mean(fBodyAccStdX),  
+              fBodyAccStdYMean              = mean(fBodyAccStdY),  
+              fBodyAccStdZMean              = mean(fBodyAccStdZ),  
+              fBodyAccJerkMeanXMean         = mean(fBodyAccJerkMeanX),  
+              fBodyAccJerkMeanYMean         = mean(fBodyAccJerkMeanY),  
+              fBodyAccJerkMeanZMean         = mean(fBodyAccJerkMeanZ),  
+              fBodyAccJerkStdXMean          = mean(fBodyAccJerkStdX),  
+              fBodyAccJerkStdYMean          = mean(fBodyAccJerkStdY),  
+              fBodyAccJerkStdZMean          = mean(fBodyAccJerkStdZ),  
+              fBodyGyroMeanXMean            = mean(fBodyGyroMeanX),  
+              fBodyGyroMeanYMean            = mean(fBodyGyroMeanY),  
+              fBodyGyroMeanZMean            = mean(fBodyGyroMeanZ),  
+              fBodyGyroStdXMean             = mean(fBodyGyroStdX),  
+              fBodyGyroStdYMean             = mean(fBodyGyroStdY),  
+              fBodyGyroStdZMean             = mean(fBodyGyroStdZ),  
+              fBodyAccMagMeanMean           = mean(fBodyAccMagMean),  
+              fBodyAccMagStdMean            = mean(fBodyAccMagStd),  
+              fBodyBodyAccJerkMagMeanMean   = mean(fBodyBodyAccJerkMagMean),  
+              fBodyBodyAccJerkMagStdMean    = mean(fBodyBodyAccJerkMagStd),  
+              fBodyBodyGyroMagMeanMean      = mean(fBodyBodyGyroMagMean),  
+              fBodyBodyGyroMagStdMean       = mean(fBodyBodyGyroMagStd),  
+              fBodyBodyGyroJerkMagMeanMean  = mean(fBodyBodyGyroJerkMagMean),  
+              fBodyBodyGyroJerkMagStdMean   = mean(fBodyBodyGyroJerkMagStd))  
                   
 This resulted in a tidy dataset consisting of 180 observations and 68 variables.
-# [1] 180  68
-str(tidy)
+
